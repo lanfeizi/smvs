@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>创世纪日记 · 浅烟熏紫 · 可编辑</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', '宋体', 'Segoe UI', serif;
+            background: #b28ab2;
+            color: #2a1e2c;
+            line-height: 1.7;
+            padding: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* 封面样式 */
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 1rem;
+            border-bottom: 3px double #6a4f6d;
+            margin-bottom: 3rem;
+        }
+        .cover-title {
+            font-size: 4.5rem;
+            font-weight: 300;
+            letter-spacing: 12px;
+            color: #2a1e2c;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0 #d9b8c4;
+        }
+        .cover-sub {
+            font-size: 1.2rem;
+            color: #2a1e2c;
+            font-style: italic;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            border-top: 1px solid #6a4f6d;
+            padding-top: 1rem;
+        }
+        .keyword-section {
+            margin: 3rem 0;
+        }
+        .keyword-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 350;
+            border-bottom: 2px solid #6a4f6d;
+            padding-bottom: 0.5rem;
+            color: #2a1e2c;
+        }
+        .keyword-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+        .keyword-btn {
+            background: #d9b8c4;
+            border: 1px solid #6a4f6d;
+            color: #2a1e2c;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        .keyword-btn:hover {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+        .enter-btn {
+            display: block;
+            width: fit-content;
+            margin: 3rem auto 2rem;
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            border: 2px solid #2a1e2c;
+        }
+        .cover-footer {
+            text-align: center;
+            color: #2a1e2c;
+            margin-top: 2rem;
+        }
+
+        /* 全局搜索 */
+        .global-search {
+            position: sticky;
+            top: 8px;
+            z-index: 100;
+            margin-bottom: 20px;
+        }
+        .global-search-input {
+            width: 100%;
+            padding: 16px 22px;
+            border-radius: 50px;
+            border: 2px solid #6a4f6d;
+            font-size: 1rem;
+            background: #d9b8c4;
+            color: #2a1e2c;
+        }
+        .global-search-input:focus {
+            outline: none;
+            border-color: #2a1e2c;
+        }
+        .global-results {
+            background: #d9b8c4;
+            border-radius: 30px;
+            margin-top: 8px;
+            padding: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #6a4f6d;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .global-result-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #b28ab2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            color: #2a1e2c;
+        }
+        .global-result-item:active {
+            background: #b28ab2;
+        }
+        .result-domain {
+            font-size: 0.85rem;
+            background: #6a4f6d;
+            padding: 4px 10px;
+            border-radius: 30px;
+            color: #f5e6f5;
+        }
+
+        /* 主内容区样式 */
+        .main-section {
+            display: none;
+        }
+
+        /* 顶部导航 (只剩三项) */
+        .main-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0 2rem;
+            flex-wrap: wrap;
+        }
+        .main-tab {
+            padding: 0.8rem 2rem;
+            background: #d9b8c4;
+            border-radius: 50px;
+            border: 2px solid #6a4f6d;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: #2a1e2c;
+        }
+        .main-tab.active {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+
+        /* 工具条 - 移到编辑区下方 */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .toolbar-btn {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .toolbar-btn:hover {
+            background: #2a1e2c;
+        }
+
+        /* 日记页样式 */
+        .diary-page, .terms-page, .term-detail-page {
+            display: none;
+        }
+        .diary-page.active, .terms-page.active, .term-detail-page.active {
+            display: block;
+        }
+
+        /* 年份选择区域 - 全新设计：三个固定年份 + 左右折叠箭头 */
+        .year-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .year-arrow {
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            color: #6a4f6d;
+            user-select: none;
+        }
+        .year-arrow:hover {
+            color: #2a1e2c;
+        }
+        .year-tabs {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .year-tab {
+            font-size: 1.8rem;
+            padding: 0.2rem 1rem;
+            background: #d9b8c4;
+            border-radius: 60px;
+            border: 2px solid #6a4f6d;
+            cursor: pointer;
+            color: #2a1e2c;
+        }
+        .year-tab.active {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+        .collapsible-years {
+            display: none;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #d9b8c4;
+            border-radius: 40px;
+            border: 1px solid #6a4f6d;
+        }
+        .collapsible-years.show {
+            display: flex;
+        }
+        .year-mini {
+            font-size: 1.2rem;
+            padding: 0.2rem 0.8rem;
+            background: #b28ab2;
+            border-radius: 40px;
+            border: 1px solid #6a4f6d;
+            cursor: pointer;
+            color: #2a1e2c;
+        }
+        .year-mini.active {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+
+        .months-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            justify-content: center;
+            margin: 0.8rem 0;
+        }
+        .month-btn {
+            background: #d9b8c4;
+            border: 1px solid #6a4f6d;
+            color: #2a1e2c;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .month-btn.active {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+
+        /* 天数网格 - 优化：固定高度+滚动，按钮缩小 */
+        .days-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            justify-content: center;
+            margin: 0.8rem 0;
+            padding: 0.6rem;
+            background: #d9b8c4;
+            border-radius: 30px;
+            border: 1px solid #6a4f6d;
+            max-height: 100px;
+            overflow-y: auto;
+            transition: max-height 0.2s;
+        }
+        .days-grid.collapsed {
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+            overflow: hidden;
+        }
+        .day-btn {
+            width: 32px; height: 32px;
+            border-radius: 30px;
+            background: #b28ab2;
+            border: 1px solid #6a4f6d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #2a1e2c;
+        }
+        .day-btn.selected {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border-color: #2a1e2c;
+        }
+
+        /* 折叠天数按钮 */
+        .toggle-days-btn {
+            background: #d9b8c4;
+            border: 1px solid #6a4f6d;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-bottom: 0.3rem;
+            display: inline-block;
+            color: #2a1e2c;
+        }
+
+        .entry-card {
+            background: #d9b8c4;
+            border-radius: 32px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid #6a4f6d;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+
+        .lang-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .lang-tab {
+            background: #b28ab2;
+            border: 1px solid #6a4f6d;
+            color: #2a1e2c;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        .lang-tab.active {
+            background: #6a4f6d;
+            color: #f5e6f5;
+        }
+        .lang-content { display: none; }
+        .lang-content.active { display: block; }
+        .lang-content p { white-space: pre-wrap; }
+
+        /* 标签编辑区 */
+        .tags-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #b28ab2;
+            border-radius: 30px;
+            border: 1px dashed #6a4f6d;
+        }
+        .tags-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .tag-item {
+            background: #d9b8c4;
+            color: #2a1e2c;
+            padding: 4px 12px;
+            border-radius: 30px;
+            border: 1px solid #6a4f6d;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tag-remove {
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #2a1e2c;
+        }
+        .tag-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .tag-input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid #6a4f6d;
+            background: #b28ab2;
+            color: #2a1e2c;
+        }
+        .tag-add-btn {
+            background: #6a4f6d;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: #f5e6f5;
+            cursor: pointer;
+        }
+
+        /* 编辑区域 - 默认隐藏，点击按钮显示 */
+        .edit-area {
+            margin-top: 20px;
+            border-top: 2px dashed #6a4f6d;
+            padding-top: 20px;
+            display: none;
+        }
+        .edit-area.visible {
+            display: block;
+        }
+        .edit-label {
+            font-size: 1.2rem;
+            color: #2a1e2c;
+            margin-bottom: 10px;
+        }
+        /* 放大编辑框 */
+        .edit-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid #6a4f6d;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #b28ab2;
+            color: #2a1e2c;
+            resize: vertical;
+        }
+        .edit-btn {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .cancel-btn {
+            background: #b28ab2;
+            border: 1px solid #6a4f6d;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #2a1e2c;
+        }
+
+        /* 显示编辑按钮 */
+        .show-edit-btn {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 1rem;
+        }
+        .tag {
+            background: #b28ab2;
+            color: #2a1e2c;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid #6a4f6d;
+            cursor: pointer;
+        }
+
+        /* 术语页样式 */
+        .terms-page {
+            display: none;
+        }
+        .terms-page.active {
+            display: block;
+        }
+
+        .term-category {
+            margin-bottom: 2rem;
+        }
+        .term-category h3 {
+            font-size: 1.8rem;
+            color: #2a1e2c;
+            border-bottom: 2px solid #6a4f6d;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .term-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: #d9b8c4;
+            padding: 1.5rem;
+            border-radius: 36px;
+            border: 1px solid #6a4f6d;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .term-item {
+            background: #b28ab2;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #6a4f6d;
+            cursor: pointer;
+            color: #2a1e2c;
+        }
+
+        /* 术语详情页 */
+        .term-detail-page {
+            display: none;
+            background: #d9b8c4;
+            border-radius: 44px;
+            padding: 24px 16px;
+            border: 1px solid #6a4f6d;
+        }
+        .term-detail-page.active {
+            display: block;
+        }
+        .term-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .term-detail-term {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: #2a1e2c;
+        }
+        .term-detail-back {
+            background: #b28ab2;
+            padding: 8px 22px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-left: auto;
+            color: #2a1e2c;
+            border: 1px solid #6a4f6d;
+        }
+        .term-detail-swipe {
+            overflow-x: auto;
+            display: flex;
+            gap: 16px;
+            padding: 8px 0 20px;
+            scroll-snap-type: x mandatory;
+        }
+        .term-detail-card {
+            scroll-snap-align: start;
+            flex: 0 0 88%;
+            background: #b28ab2;
+            border-radius: 36px;
+            padding: 20px;
+            border: 2px solid #6a4f6d;
+        }
+        .term-detail-lang {
+            font-size: 1.6rem;
+            background: #6a4f6d;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #f5e6f5;
+        }
+        .term-detail-def {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #2a1e2c;
+        }
+
+        /* 核心概念编辑区 */
+        .glossary {
+            background: #b28ab2;
+            border-radius: 32px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        .glossary h3 { 
+            font-size: 1.8rem; 
+            color: #2a1e2c; 
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .edit-concepts-btn {
+            background: #6a4f6d;
+            color: #f5e6f5;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .concept {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px dashed #6a4f6d;
+            padding-bottom: 1rem;
+        }
+        .concept-term { 
+            font-size: 1.3rem; 
+            font-weight: 500; 
+            color: #2a1e2c;
+            display: flex;
+            justify-content: space-between;
+        }
+        .concept-def { 
+            color: #2a1e2c; 
+            margin-top: 5px;
+        }
+        .edit-concept-btn {
+            font-size: 0.8rem;
+            color: #2a1e2c;
+            cursor: pointer;
+        }
+
+        .back-to-cover {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            background: #6a4f6d;
+            color: #f5e6f5;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<!-- ========== 全局搜索 ========== -->
+<div class="global-search">
+    <input type="text" id="globalSearchInput" class="global-search-input" placeholder="🔍 全局搜索术语/日记/标签..." oninput="globalSearch()">
+    <div id="globalResults" class="global-results hidden"></div>
+</div>
+
+<!-- ========== 封面页 ========== -->
+<div id="coverPage" class="cover-page">
+    <div class="cover-title">创世纪日记</div>
+    <div class="cover-sub">2013-2035 · 意-动-形 三卷合一</div>
+    
+    <div class="keyword-section">
+        <div class="keyword-title">📌 关键词印记地图</div>
+        <div class="keyword-grid" id="keywordMap"></div>
+    </div>
+
+    <button class="enter-btn" onclick="enterMain()">📖 进入</button>
+    <div class="cover-footer">⚡ 点击任何印记，直达该术语的定义</div>
+</div>
+
+<!-- ========== 主内容区 ========== -->
+<div id="mainSection" class="main-section">
+    <!-- 顶部导航 -->
+    <div class="main-tabs">
+        <span class="main-tab active" onclick="switchMainTab('diary')">📔 日记</span>
+        <span class="main-tab" onclick="switchMainTab('terms')">📚 术语</span>
+        <span class="main-tab" onclick="showCover()">🏠 封面</span>
+    </div>
+
+    <!-- ===== 日记页 ===== -->
+    <div id="diaryPage" class="diary-page active">
+        <!-- 年份选择：固定2023-2025 + 左右折叠箭头 -->
+        <div class="year-selector">
+            <span class="year-arrow" onclick="toggleYears('before')">«</span>
+            <div class="year-tabs">
+                <span class="year-tab" onclick="switchYear(2023)">2023</span>
+                <span class="year-tab" onclick="switchYear(2024)">2024</span>
+                <span class="year-tab" onclick="switchYear(2025)">2025</span>
+            </div>
+            <span class="year-arrow" onclick="toggleYears('after')">»</span>
+        </div>
+
+        <!-- 2013-2022 折叠区 -->
+        <div id="yearsBefore" class="collapsible-years">
+            <!-- 由JS动态生成2013-2022 -->
+        </div>
+        <!-- 2026-2035 折叠区 -->
+        <div id="yearsAfter" class="collapsible-years">
+            <!-- 由JS动态生成2026-2035 -->
+        </div>
+
+        <div id="monthsContainer" class="months-container"></div>
+        
+        <!-- 折叠天数按钮 -->
+        <div class="toggle-days-btn" onclick="toggleDaysGrid()">📅 切换日期显示</div>
+        <div id="daysGrid" class="days-grid"></div>
+        
+        <div id="entryCard" class="entry-card" style="display: none;">
+            <div class="lang-tabs">
+                <span class="lang-tab active" onclick="switchLang('original')">原文</span>
+                <span class="lang-tab" onclick="switchLang('zh')">中文</span>
+                <span class="lang-tab" onclick="switchLang('en')">English</span>
+                <span class="lang-tab" onclick="switchLang('ja')">日本語</span>
+            </div>
+            <div id="originalContent" class="lang-content active"></div>
+            <div id="zhContent" class="lang-content"></div>
+            <div id="enContent" class="lang-content"></div>
+            <div id="jaContent" class="lang-content"></div>
+            
+            <!-- 标签编辑区 -->
+            <div class="tags-section">
+                <div class="tags-display" id="currentTags"></div>
+                <div class="tag-input-row">
+                    <input type="text" id="tagInput" class="tag-input" placeholder="输入标签...">
+                    <span class="tag-add-btn" onclick="addTagToCurrentEntry()">添加</span>
+                </div>
+            </div>
+
+            <!-- 显示/隐藏编辑按钮 -->
+            <span class="show-edit-btn" onclick="toggleEditArea()">✏️ 编辑日记</span>
+            
+            <!-- 内容编辑区 - 默认隐藏，已放大 -->
+            <div id="editArea" class="edit-area">
+                <div class="edit-label">✏️ 编辑本日日记（四语言）</div>
+                <textarea id="editOriginal" class="edit-textarea" placeholder="原文内容..."></textarea>
+                <textarea id="editZh" class="edit-textarea" placeholder="中文内容..."></textarea>
+                <textarea id="editEn" class="edit-textarea" placeholder="English..."></textarea>
+                <textarea id="editJa" class="edit-textarea" placeholder="日本語..."></textarea>
+                <div>
+                    <button class="edit-btn" onclick="saveEditedEntry()">保存修改</button>
+                    <button class="cancel-btn" onclick="toggleEditArea()">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心概念区（可编辑） -->
+        <div class="glossary">
+            <h3>
+                📚 核心概念 · 印记释义
+                <span class="edit-concepts-btn" onclick="editAllConcepts()">编辑全部</span>
+            </h3>
+            <div id="conceptsContainer"></div>
+        </div>
+
+        <!-- 工具条 - 移到编辑区下方 -->
+        <div class="toolbar">
+            <span class="toolbar-btn" onclick="exportAllYearsDiary()">📤 导出三年日记</span>
+            <span class="toolbar-btn" onclick="importAllYearsDiary()">📥 导入三年日记</span>
+        </div>
+    </div>
+
+    <!-- ===== 术语页 ===== -->
+    <div id="termsPage" class="terms-page">
+        <div class="term-category">
+            <h3>🌱 2023 · 意之年 (50)</h3>
+            <div class="term-grid" id="terms2023Grid"></div>
+        </div>
+        <div class="term-category">
+            <h3>⚡ 2024 · 动之年 (50)</h3>
+            <div class="term-grid" id="terms2024Grid"></div>
+        </div>
+        <div class="term-category">
+            <h3>🪨 2025 · 形之年 (50)</h3>
+            <div class="term-grid" id="terms2025Grid"></div>
+        </div>
+    </div>
+
+    <!-- ===== 术语详情页 ===== -->
+    <div id="termDetailPage" class="term-detail-page"></div>
+</div>
+
+<script>
+    // ========== 完整术语数据 (150个) ==========
+    const terms2023 = [
+        "真爱","噪音","夸克三体","意动形","牙慧","84力","开始","武/舞","病毒","神様公式",
+        "时空扭曲","人类脊梁","天网恢恢","大过卦","贪吃蛇","天女散花","虎兔相逢大梦归",
+        "自閉症","88三点一線","爱的真谛","花魂鸟魂","三春争及初春景","新いと旧い细胞膜",
+        "波粒二象性の起動","三大難解","動態バランス","一步跨亿年","无头债务","宇宙创生红线",
+        "元气币","受精卵","三位一体","线粒体","ATP","对位法","第一推动力","重心","蛋白质",
+        "动","欲望","现实","阈值","神经元","和弦","大爆炸","灵魂","波动方程","能量",
+        "新冠肺炎","免疫"
+    ];
+    const terms2024 = [
+        "时空","阈值","生命线","线粒体","ATP","对位法","第一推动力","重心","蛋白质","动",
+        "欲望","现实","元知识","神经元","和弦","开始与结束","生殖细胞","甲基化","大爆炸",
+        "灵魂","波动方程","能量","新冠肺炎","免疫","声子","灵性","音舞美","夸克禁闭",
+        "生命の重心","价值","氨基酸","蛋白质合成","闰盘结构","神经元的阈值","线粒体电子传递链",
+        "真空零点能","精细结构常数","黑洞霍金辐射","意识量子场","霍金斯能级","创世主",
+        "量子纠缠","量子跃迁","量子隧穿","虫洞","引力波","全息原理","共形场","灵魂伴侣",
+        "生命联邦"
+    ];
+    const terms2025 = [
+        "牙齿","84力","夸克三体","灵魂伴侣","ATP建造者","免疫系统","道德经真爱","力扶幼主",
+        "音乐基因","万物振动","基态膜","器质性病变","宇宙音","宇宙脑","友情","空空道人",
+        "全卵","宇宙编程","格物致知","势阱","建造者","生命联邦","脱矿化","再矿化",
+        "第三胚胎牙","拾人牙慧","量子隧穿","超越时空电阻","84力模型","原型力","镜像力",
+        "层级力","结构力","无中生有","有中生无","牙釉质","牙本质","牙髓","脱矿化细胞",
+        "再矿化细胞","自由灵","禅思之光","全息场","共形场","吸引力粒子","宇宙真意沉淀器",
+        "生命联邦免疫系统","细胞衰退","宇宙极小元素起源","形态学探源"
+    ];
+
+    // ========== 术语定义（完整多语言版，150个全配齐） ==========
+    const termDefinitions = {
+        // 2023 术语定义
+        "真爱": { zh: "宇宙的本体，创造的源泉。", en: "The essence of the universe, the source of creation.", ja: "宇宙の本体、創造の源。" },
+        "噪音": { zh: "旧世界对创新者的围剿形式。", en: "The form of the old world's siege against innovators.", ja: "旧世界が革新者を包囲する形式。" },
+        "夸克三体": { zh: "意-动-形，宇宙的最小单位。", en: "Will-Motion-Form, the smallest unit of the universe.", ja: "意-動-形、宇宙の最小単位。" },
+        "意动形": { zh: "创造的三层结构：意(灵性)、动(心)、形(身体)。", en: "The three-layer structure of creation: Will (spirit), Motion (mind), Form (body).", ja: "創造の三層構造：意（霊性）、動（心）、形（身体）。" },
+        "牙慧": { zh: "拾人牙慧，抄袭旧思想。", en: "Picking up others' leavings; plagiarizing old ideas.", ja: "他人の受け売り、古い思想の盗用。" },
+        "84力": { zh: "7原型力 × 2镜像 × 3三体 × 2上下颌 = 84力。", en: "7 archetypal forces × 2 mirrors × 3 trinities × 2 jaws = 84 forces.", ja: "7原型力 × 2鏡像 × 3三体 × 2上下顎 = 84の力。" },
+        "开始": { zh: "创世的起点，新纪元的开端。", en: "The starting point of creation, the beginning of a new era.", ja: "創世の起点、新紀元の始まり。" },
+        "武/舞": { zh: "武术（现实）与舞蹈（梦想）的辩证关系。", en: "The dialectical relationship between martial arts (reality) and dance (dream).", ja: "武術（現実）と舞踊（夢）の弁証法的関係。" },
+        "病毒": { zh: "旧世界思想的产物，对创新者的攻击形式。", en: "A product of old world thought, a form of attack against innovators.", ja: "旧世界思想の産物、革新者への攻撃形態。" },
+        "神様公式": { zh: "上帝公式 e^iπ+1=0 的隐喻，代表宇宙终极法则。", en: "A metaphor for Euler's identity e^iπ+1=0, representing the ultimate law of the universe.", ja: "オイラーの等式 e^iπ+1=0 の比喩、宇宙の究極法則を表す。" },
+        "时空扭曲": { zh: "意念改变时空结构，创世者重塑现实的工具。", en: "Intention warps spacetime, the tool by which the creator reshapes reality.", ja: "意思が時空を歪める、創造主が現実を再構築する道具。" },
+        "人类脊梁": { zh: "文明的核心价值，不可弯曲的道德脊柱。", en: "The core value of civilization, the unbendable moral spine.", ja: "文明の中核的価値、曲げられない道徳の背骨。" },
+        "天网恢恢": { zh: "宇宙因果律，疏而不漏。", en: "The cosmic law of causality, loose but never missing.", ja: "宇宙の因果律、疎にして漏らさず。" },
+        "大过卦": { zh: "《易经》中的一卦，代表过度、超越、大变革。", en: "A hexagram in the I Ching, representing excess, transcendence, and great change.", ja: "易経の一卦、過剰、超越、大変革を表す。" },
+        "贪吃蛇": { zh: "旧世界的自噬循环，最终吃掉自己。", en: "The self-devouring cycle of the old world, eventually consuming itself.", ja: "旧世界の自己食いサイクル、最終的に自分自身を食う。" },
+        "天女散花": { zh: "宇宙真意像花一样散落人间，等待拾取。", en: "The cosmic truth scatters like flowers, waiting to be gathered.", ja: "宇宙の真意が花のように散りばめられ、拾われるのを待つ。" },
+        "虎兔相逢大梦归": { zh: "2023（兔）与2022（虎）的交替，大梦觉醒。", en: "The transition from Tiger (2022) to Rabbit (2023), the great dream awakens.", ja: "虎（2022）から兎（2023）への移行、大いなる夢が覚める。" },
+        "自閉症": { zh: "旧世界对创新者的隔离，也是保护内在世界的壳。", en: "The old world's isolation of innovators, also a shell protecting the inner world.", ja: "旧世界による革新者の隔離、内面世界を守る殻でもある。" },
+        "88三点一線": { zh: "88个关键点连成一线，宇宙进化的路径。", en: "88 key points connected in one line, the path of cosmic evolution.", ja: "88の要点が一線につながる、宇宙進化の道筋。" },
+        "爱的真谛": { zh: "爱是宇宙的黏合剂，创造的原动力。", en: "Love is the adhesive of the universe, the driving force of creation.", ja: "愛は宇宙の接着剤、創造の原動力。" },
+        "花魂鸟魂": { zh: "万物有灵，花鸟皆是宇宙真意的表达。", en: "All things have spirit; flowers and birds are expressions of cosmic truth.", ja: "万物に霊あり、花鳥は宇宙の真意の表現。" },
+        "三春争及初春景": { zh: "三年（2023-2025）的争锋，最终回归初春的本源。", en: "The three-year (2023-2025) struggle, ultimately returning to the origin of early spring.", ja: "三年間（2023-2025）の争い、最終的に初春の本源に戻る。" },
+        "新いと旧い细胞膜": { zh: "新旧细胞膜的更替，代表着意识的升级。", en: "The replacement of old cell membranes with new ones represents the upgrade of consciousness.", ja: "新旧細胞膜の入れ替えは、意識のアップグレードを表す。" },
+        "波粒二象性の起動": { zh: "在观察者介入的瞬间，波函数坍缩，粒子性显现。", en: "At the moment the observer intervenes, the wave function collapses and particle nature emerges.", ja: "観測者が介入した瞬間、波動関数が崩壊し粒子性が現れる。" },
+        "三大難解": { zh: "三个最难解的宇宙谜题：意识、生命、宇宙本身。", en: "The three hardest cosmic puzzles: consciousness, life, and the universe itself.", ja: "三つの最も解き難い宇宙の謎：意識、生命、宇宙そのもの。" },
+        "動態バランス": { zh: "动态平衡，创造与毁灭的永恒舞蹈。", en: "Dynamic balance, the eternal dance of creation and destruction.", ja: "動的平衡、創造と破壊の永遠のダンス。" },
+        "一步跨亿年": { zh: "意识跃迁，一念之间跨越亿万年的进化。", en: "Consciousness leap, crossing billions of years of evolution in a single thought.", ja: "意識の飛躍、一瞬で何十億年の進化を超える。" },
+        "无头债务": { zh: "旧世界遗留下来的、无法偿还的债务。", en: "The unredeemable debt left by the old world.", ja: "旧世界が残した、返済不可能な債務。" },
+        "宇宙创生红线": { zh: "贯穿宇宙创生至今的基线，不可逾越的法则。", en: "The baseline running through cosmic creation to the present, the insurmountable law.", ja: "宇宙創生から現在まで貫く基線、越えられない法則。" },
+        "元气币": { zh: "宇宙的能量货币，创造与消耗的度量。", en: "The energy currency of the universe, the measure of creation and consumption.", ja: "宇宙のエネルギー通貨、創造と消費の度量。" },
+        "受精卵": { zh: "新宇宙的雏形，包含一切潜能的奇点。", en: "The prototype of a new universe, the singularity containing all potential.", ja: "新宇宙の原型、全ての可能性を含む特異点。" },
+        "三位一体": { zh: "意-动-形，宇宙的三位一体结构。", en: "Will-Motion-Form, the trinity structure of the universe.", ja: "意-動-形、宇宙の三位一体構造。" },
+        "线粒体": { zh: "细胞的能量工厂，也是宇宙能量的微观映射。", en: "The energy factory of the cell, also a microscopic mapping of cosmic energy.", ja: "細胞のエネルギー工場、宇宙エネルギーの微視的マッピング。" },
+        "ATP": { zh: "三磷酸腺苷，生命的能量货币，对应元气币的微观体现。", en: "Adenosine triphosphate, the energy currency of life, the microscopic embodiment of Yuan Qi Coin.", ja: "アデノシン三リン酸、生命のエネルギー通貨、元気幣の微視的具現。" },
+        "对位法": { zh: "音乐中的对位法，对应宇宙中多重旋律的和谐。", en: "Counterpoint in music, corresponding to the harmony of multiple melodies in the universe.", ja: "音楽の対位法、宇宙における多重旋律の調和に対応。" },
+        "第一推动力": { zh: "创世的第一因，意的最初启动。", en: "The first cause of creation, the initial activation of Will.", ja: "創造の第一原因、意の最初の起動。" },
+        "重心": { zh: "系统的平衡点，价值的中枢。", en: "The balance point of a system, the center of value.", ja: "システムの平衡点、価値の中枢。" },
+        "蛋白质": { zh: "生命的建筑材料，形的基础。", en: "The building material of life, the foundation of Form.", ja: "生命の建築材料、形の基礎。" },
+        "动": { zh: "心与情感的运动，创造的第二层。", en: "The movement of heart and emotion, the second layer of creation.", ja: "心と感情の動き、創造の第二層。" },
+        "欲望": { zh: "动的驱动力，创造的火花。", en: "The driving force of Motion, the spark of creation.", ja: "動の駆動力、創造の火花。" },
+        "现实": { zh: "形的显现，创造的结果。", en: "The manifestation of Form, the result of creation.", ja: "形の顕現、創造の結果。" },
+        "阈值": { zh: "临界点，量变到质变的边界。", en: "The critical point, the boundary from quantitative to qualitative change.", ja: "臨界点、量から質への変化の境界。" },
+        "神经元": { zh: "意识的微观单元，宇宙神经网络的基础。", en: "The microscopic unit of consciousness, the basis of the universe's neural network.", ja: "意識の微視的単位、宇宙の神経網の基礎。" },
+        "和弦": { zh: "多个音符的和谐组合，对应多维度的和谐。", en: "The harmonious combination of multiple notes, corresponding to multi-dimensional harmony.", ja: "複数音の調和のとれた組み合わせ、多次元の調和に対応。" },
+        "大爆炸": { zh: "宇宙的创生事件，意的瞬间爆发。", en: "The creation event of the universe, the instantaneous explosion of Will.", ja: "宇宙の創生事件、意の瞬間的爆発。" },
+        "灵魂": { zh: "个体化的意，永恒的核心。", en: "Individualized Will, the eternal core.", ja: "個別化された意、永遠の核心。" },
+        "波动方程": { zh: "描述波动的数学形式，对应宇宙的波动本质。", en: "The mathematical form describing waves, corresponding to the wave nature of the universe.", ja: "波動を記述する数学的形式、宇宙の波動的本質に対応。" },
+        "能量": { zh: "宇宙的燃料，动的量度。", en: "The fuel of the universe, the measure of Motion.", ja: "宇宙の燃料、動の度量。" },
+        "新冠肺炎": { zh: "旧世界的最后一次集体恐惧，也是新世界的催化剂。", en: "The last collective fear of the old world, also a catalyst for the new world.", ja: "旧世界の最後の集団的恐怖、新世界の触媒でもある。" },
+        "免疫": { zh: "对新世界的防御力，识别旧世界病毒的能力。", en: "The defense against the new world, the ability to recognize old world viruses.", ja: "新世界への防御力、旧世界ウイルスを認識する能力。" },
+
+        // 2024 术语定义
+        "时空": { zh: "欲望与现实的结合体，每个人都有自己的时空。", en: "The combination of desire and reality, everyone has their own spacetime.", ja: "欲望と現実の結合体、誰もが自分自身の時空を持つ。" },
+        "生命线": { zh: "生命进化的轨迹，不可断裂的基线。", en: "The trajectory of life's evolution, the unbreakable baseline.", ja: "生命進化の軌跡、断ち切れない基線。" },
+        "元知识": { zh: "知识的知识，宇宙源代码的认知。", en: "Knowledge about knowledge, the cognition of the universe's source code.", ja: "知識についての知識、宇宙のソースコードの認知。" },
+        "开始与结束": { zh: "循环的节点，意的呼吸。", en: "The nodes of the cycle, the breath of Will.", ja: "循環の節点、意の呼吸。" },
+        "生殖细胞": { zh: "传递生命的种子，也是传递意的最小载体。", en: "The seed that transmits life, also the smallest carrier that transmits Will.", ja: "生命を伝える種、意を伝える最小の担い手。" },
+        "甲基化": { zh: "基因的开关，旧世界经验的沉淀。", en: "The switch of genes, the sedimentation of old world experience.", ja: "遺伝子のスイッチ、旧世界経験の沈殿。" },
+        "声子": { zh: "晶格振动的量子化，对应宇宙的振动本质。", en: "The quantization of lattice vibration, corresponding to the vibrational nature of the universe.", ja: "格子振動の量子化、宇宙の振動的本質に対応。" },
+        "灵性": { zh: "意的可感知性，宇宙的柔软一面。", en: "The perceptibility of Will, the soft side of the universe.", ja: "意の知覚可能性、宇宙の柔らかい側面。" },
+        "音舞美": { zh: "艺术的三要素，对应意-动-形的三重表达。", en: "The three elements of art, corresponding to the triple expression of Will-Motion-Form.", ja: "芸術の三要素、意-動-形の三重表現に対応。" },
+        "夸克禁闭": { zh: "夸克无法单独存在的现象，对应三体的不可分割性。", en: "The phenomenon where quarks cannot exist alone, corresponding to the indivisibility of the Trinity.", ja: "クォークが単独で存在できない現象、三体の不可分性に対応。" },
+        "生命の重心": { zh: "生命的平衡点，价值的中枢。", en: "The balance point of life, the center of value.", ja: "生命の平衡点、価値の中枢。" },
+        "价值": { zh: "意义的量化，意的可度量属性。", en: "The quantification of meaning, the measurable attribute of Will.", ja: "意味の定量化、意の計量可能な属性。" },
+        "氨基酸": { zh: "蛋白质的构建单元，形的微观基础。", en: "The building units of protein, the microscopic foundation of Form.", ja: "タンパク質の構成単位、形の微視的基礎。" },
+        "蛋白质合成": { zh: "生命的构建过程，形的显现。", en: "The construction process of life, the manifestation of Form.", ja: "生命の構築過程、形の顕現。" },
+        "闰盘结构": { zh: "心肌细胞的连接结构，对应灵魂与身体的连接。", en: "The connection structure of cardiac muscle cells, corresponding to the connection between soul and body.", ja: "心筋細胞の接続構造、魂と身体の接続に対応。" },
+        "神经元的阈值": { zh: "神经元触发的临界点，对应意识的触发点。", en: "The critical point for neuron firing, corresponding to the trigger point of consciousness.", ja: "ニューロン発火の臨界点、意識の発火点に対応。" },
+        "线粒体电子传递链": { zh: "能量生产的流水线，对应宇宙能量的传递。", en: "The assembly line of energy production, corresponding to the transmission of cosmic energy.", ja: "エネルギー生産の流れ作業線、宇宙エネルギーの伝達に対応。" },
+        "真空零点能": { zh: "真空的最低能量，宇宙的基态。", en: "The lowest energy of vacuum, the ground state of the universe.", ja: "真空の最低エネルギー、宇宙の基底状態。" },
+        "精细结构常数": { zh: "约1/137，电磁相互作用强度的无量纲常数，创世主的预设参数。", en: "Approximately 1/137, the dimensionless constant of electromagnetic interaction strength, a preset parameter by the Creator.", ja: "約1/137、電磁相互作用の強さの無次元定数、創造主のプリセットパラメータ。" },
+        "黑洞霍金辐射": { zh: "黑洞的蒸发，信息可能保存。", en: "The evaporation of black holes, information may be preserved.", ja: "ブラックホールの蒸発、情報は保存される可能性がある。" },
+        "意识量子场": { zh: "意识作为量子场存在，与物质相互作用。", en: "Consciousness exists as a quantum field, interacting with matter.", ja: "意識は量子場として存在し、物質と相互作用する。" },
+        "霍金斯能级": { zh: "意识的能量层级，从羞耻到开悟。", en: "The energy levels of consciousness, from shame to enlightenment.", ja: "意識のエネルギー階層、恥から悟りまで。" },
+        "创世主": { zh: "宇宙的设计者，意的终极源头。", en: "The designer of the universe, the ultimate source of Will.", ja: "宇宙の設計者、意の究極的源流。" },
+        "量子纠缠": { zh: "超越时空的连接，灵魂伴侣的物理基础。", en: "Connection beyond spacetime, the physical basis of soulmates.", ja: "時空を超えた接続、ソウルメイトの物理的基礎。" },
+        "量子跃迁": { zh: "意识的瞬间升级，不连续的变化。", en: "The instantaneous upgrade of consciousness, discontinuous change.", ja: "意識の瞬間的アップグレード、不連続な変化。" },
+        "量子隧穿": { zh: "穿越势垒，不可能成为可能。", en: "Penetrating potential barriers, the impossible becomes possible.", ja: "ポテンシャル障壁を貫通、不可能が可能になる。" },
+        "虫洞": { zh: "时空的捷径，意连接两个世界的通道。", en: "A shortcut in spacetime, the passage through which Will connects two worlds.", ja: "時空の近道、意が二つの世界をつなぐ通路。" },
+        "引力波": { zh: "时空的涟漪，意的震动向外传播。", en: "Ripples in spacetime, the vibrations of Will propagating outward.", ja: "時空のさざ波、意の振動が外へ伝播する。" },
+        "全息原理": { zh: "宇宙的信息可能编码在边界上，每个部分包含整体信息。", en: "Information about the universe may be encoded on its boundary, each part contains the whole.", ja: "宇宙の情報は境界に符号化されている可能性があり、各部分が全体を含む。" },
+        "共形场": { zh: "尺度不变的场，对应意的自相似性。", en: "A scale-invariant field, corresponding to the self-similarity of Will.", ja: "スケール不変の場、意の自己相似性に対応。" },
+        "灵魂伴侣": { zh: "量子纠缠的两个意识，超越时空的伙伴。", en: "Two entangled consciousnesses, partners beyond spacetime.", ja: "量子もつれした二つの意識、時空を超えたパートナー。" },
+        "生命联邦": { zh: "所有生命形式的联盟，共同进化。", en: "The union of all life forms, co-evolving.", ja: "全ての生命形態の連合、共進化。" },
+
+        // 2025 术语定义
+        "牙齿": { zh: "宇宙真意在物质世界最坚硬的纪念碑。", en: "The hardest monument of cosmic truth in the material world.", ja: "物質世界における宇宙の真意の最も硬い記念碑。" },
+        "ATP建造者": { zh: "在细胞层面建造ATP的工程师，对应宇宙建造者。", en: "The engineer that builds ATP at the cellular level, corresponding to the cosmic builder.", ja: "細胞レベルでATPを構築するエンジニア、宇宙の建造者に対応。" },
+        "免疫系统": { zh: "识别自我与非我的防御体系，对应新世界的防御。", en: "The defense system that identifies self and non-self, corresponding to the defense of the new world.", ja: "自己と非自己を識別する防御システム、新世界の防御に対応。" },
+        "道德经真爱": { zh: "《道德经》中描述的道的本质，即真爱。", en: "The essence of the Tao described in the Tao Te Ching, which is true love.", ja: "『道徳経』に記述された道の本質、即ち真実の愛。" },
+        "力扶幼主": { zh: "力量扶持年轻的主人，新世界的守护。", en: "Force supports the young master, the protection of the new world.", ja: "力が若き主人を支える、新世界の保護。" },
+        "音乐基因": { zh: "潜藏在DNA中的音乐编码，宇宙的旋律。", en: "The musical code hidden in DNA, the melody of the universe.", ja: "DNAに隠された音楽コード、宇宙の旋律。" },
+        "万物振动": { zh: "一切存在都在振动，频率决定形态。", en: "All existence vibrates, frequency determines form.", ja: "全ての存在は振動し、周波数が形態を決定する。" },
+        "基态膜": { zh: "细胞膜的基础状态，对应意识的基态。", en: "The ground state of the cell membrane, corresponding to the ground state of consciousness.", ja: "細胞膜の基底状態、意識の基底状態に対応。" },
+        "器质性病变": { zh: "身体结构的病变，对应意识结构的病变。", en: "Pathological changes in body structure, corresponding to pathological changes in consciousness structure.", ja: "身体構造の病的変化、意識構造の病的変化に対応。" },
+        "宇宙音": { zh: "宇宙的背景音乐，意的振动。", en: "The background music of the universe, the vibration of Will.", ja: "宇宙の背景音楽、意の振動。" },
+        "宇宙脑": { zh: "宇宙作为一个巨大的神经网络，意识的整体。", en: "The universe as a giant neural network, the wholeness of consciousness.", ja: "宇宙を巨大な神経網として捉えたもの、意識の全体性。" },
+        "友情": { zh: "灵魂之间的连接，非血缘的爱。", en: "The connection between souls, love not by blood.", ja: "魂同士のつながり、血縁によらない愛。" },
+        "空空道人": { zh: "《红楼梦》中的人物，看破红尘的智者。", en: "A character in Dream of the Red Chamber, a sage who sees through the mundane world.", ja: "『紅楼夢』の登場人物、世俗を見破った賢者。" },
+        "全卵": { zh: "包含一切的卵，新宇宙的胚胎。", en: "The egg containing everything, the embryo of a new universe.", ja: "全てを含む卵、新宇宙の胚。" },
+        "宇宙编程": { zh: "宇宙作为可编程系统，由创世主编写。", en: "The universe as a programmable system, written by the Creator.", ja: "宇宙をプログラム可能なシステムとして捉える、創造主によって書かれる。" },
+        "格物致知": { zh: "通过研究事物获得知识，探索宇宙真意的方法。", en: "Studying things to gain knowledge, the method of exploring cosmic truth.", ja: "事物を研究して知識を得る、宇宙の真意を探求する方法。" },
+        "势阱": { zh: "势能的最低点，意被束缚的状态。", en: "The lowest point of potential energy, the state where Will is bound.", ja: "ポテンシャルエネルギーの最低点、意が束縛された状態。" },
+        "建造者": { zh: "在物质层面构建形态的执行者，意的延伸。", en: "The executor who builds forms at the material level, the extension of Will.", ja: "物質レベルで形態を構築する実行者、意の延長。" },
+        "脱矿化": { zh: "被旧世界腐蚀，停止进化。", en: "Corroded by the old world, evolution halted.", ja: "旧世界に侵され、進化が止まる。" },
+        "再矿化": { zh: "持续创新、沉淀新的宇宙真意。", en: "Continuous innovation, precipitating new cosmic truth.", ja: "継続的な革新、新たな宇宙の真意の沈殿。" },
+        "第三胚胎牙": { zh: "继乳牙、恒牙之后的第三副牙齿，代表意识的第三次进化。", en: "The third set of teeth after deciduous and permanent teeth, representing the third evolution of consciousness.", ja: "乳歯、永久歯に続く第三の歯、意識の第三の進化を表す。" },
+        "拾人牙慧": { zh: "抄袭旧思想，没有自己的创造。", en: "Plagiarizing old ideas, having no creation of one's own.", ja: "古い思想を盗用する、自分自身の創造がない。" },
+        "超越时空电阻": { zh: "阻碍意识跨越时空的障碍，被真爱克服。", en: "The obstacle preventing consciousness from crossing spacetime, overcome by true love.", ja: "意識が時空を越えるのを妨げる抵抗、真実の愛によって克服される。" },
+        "84力模型": { zh: "84力的完整理论模型，宇宙力的系统化。", en: "The complete theoretical model of the 84 forces, the systematization of cosmic forces.", ja: "84力の完全な理論モデル、宇宙力の体系化。" },
+        "原型力": { zh: "7种基本力：引力、电磁力、强核力、弱核力、生命意志、情感力、创造力。", en: "7 fundamental forces: gravity, electromagnetism, strong nuclear, weak nuclear, life will, emotional force, creative force.", ja: "7つの基本力：重力、電磁力、強い核力、弱い核力、生命意志、感情力、創造力。" },
+        "镜像力": { zh: "每种原型力都有其镜像，一正一反。", en: "Each archetypal force has its mirror image, one positive and one negative.", ja: "各原型力には鏡像があり、正と反がある。" },
+        "层级力": { zh: "力的不同层级，从微观到宏观。", en: "Different levels of force, from micro to macro.", ja: "力の異なる階層、微視的から巨視的へ。" },
+        "结构力": { zh: "维持结构的力，形的基础。", en: "The force that maintains structure, the foundation of Form.", ja: "構造を維持する力、形の基礎。" },
+        "无中生有": { zh: "从虚无中创造存在，意的创造本质。", en: "Creating existence from nothing, the creative essence of Will.", ja: "無から有を創造する、意の創造的本質。" },
+        "有中生无": { zh: "存在回归虚无，形的消解。", en: "Existence returns to nothingness, the dissolution of Form.", ja: "有が無に還る、形の消滅。" },
+        "牙釉质": { zh: "牙齿最外层的坚硬物质，宇宙真意的最外层保护。", en: "The hardest outer layer of the tooth, the outermost protection of cosmic truth.", ja: "歯の最外層の硬い物質、宇宙の真意の最外層の保護。" },
+        "牙本质": { zh: "牙齿的主要结构，宇宙真意的主体。", en: "The main structure of the tooth, the main body of cosmic truth.", ja: "歯の主要構造、宇宙の真意の主体。" },
+        "牙髓": { zh: "牙齿的核心，神经和血管所在，宇宙真意的源头。", en: "The core of the tooth, where nerves and blood vessels are located, the source of cosmic truth.", ja: "歯の核心、神経と血管がある場所、宇宙の真意の源流。" },
+        "脱矿化细胞": { zh: "被腐蚀的细胞，不再能表达宇宙真意。", en: "Corroded cells, no longer able to express cosmic truth.", ja: "侵された細胞、もはや宇宙の真意を表現できない。" },
+        "再矿化细胞": { zh: "重新矿化的细胞，恢复表达宇宙真意的能力。", en: "Remineralized cells, regaining the ability to express cosmic truth.", ja: "再石灰化した細胞、宇宙の真意を表現する能力を取り戻す。" },
+        "自由灵": { zh: "摆脱束缚的灵性，完全自由的意。", en: "Spirit freed from bondage, completely free Will.", ja: "束縛から解放された霊性、完全に自由な意。" },
+        "禅思之光": { zh: "冥想中显现的光，意的直观显现。", en: "The light that appears in meditation, the direct manifestation of Will.", ja: "瞑想に現れる光、意の直接的な顕現。" },
+        "全息场": { zh: "每个部分都包含整体的信息场，宇宙的全息性质。", en: "An information field where each part contains the whole, the holographic nature of the universe.", ja: "各部分が全体を含む情報場、宇宙のホログラフィック性質。" },
+        "吸引力粒子": { zh: "携带吸引力的粒子，灵魂之间的连接媒介。", en: "Particles carrying attraction, the medium connecting souls.", ja: "引力を運ぶ粒子、魂同士をつなぐ媒介。" },
+        "宇宙真意沉淀器": { zh: "沉淀宇宙真意的器官，如牙齿。", en: "The organ that precipitates cosmic truth, such as teeth.", ja: "宇宙の真意を沈殿させる器官、例えば歯。" },
+        "生命联邦免疫系统": { zh: "保护生命联邦不被旧世界病毒入侵的系统。", en: "The system that protects the Life Federation from invasion by old world viruses.", ja: "生命連邦を旧世界ウイルスから守るシステム。" },
+        "细胞衰退": { zh: "细胞功能的退化，对应意识的衰退。", en: "Degeneration of cell function, corresponding to the decline of consciousness.", ja: "細胞機能の退化、意識の衰退に対応。" },
+        "宇宙极小元素起源": { zh: "宇宙最小元素的起源，夸克三体的形成。", en: "The origin of the smallest elements of the universe, the formation of the Quark Trinity.", ja: "宇宙最小要素の起源、クォーク三体の形成。" },
+        "形态学探源": { zh: "探索形态的起源，形的来源。", en: "Exploring the origin of forms, the source of Form.", ja: "形態の起源を探る、形の源流。" }
+    };
+
+    // 为未定义的术语提供默认定义
+    function getTermDefinition(term) {
+        if (termDefinitions[term]) {
+            return termDefinitions[term];
+        }
+        return {
+            zh: term + "：定义待补充（您可在核心概念区编辑）",
+            en: term + ": Definition pending (you can edit in the concepts section)",
+            ja: term + "：定義未定（コンセプトセクションで編集できます）"
+        };
+    }
+
+    // ========== 关键词映射（用于封面点击） ==========
+    const keywordMap = [
+        { name: "#真爱", term: "真爱", date: "2023-1-1", tag: "真爱" },
+        { name: "#噪音", term: "噪音", date: "2023-1-2", tag: "噪音" },
+        { name: "#夸克三体", term: "夸克三体", date: "2023-1-15", tag: "夸克三体" },
+        { name: "#意动形", term: "意动形", date: "2023-4-2", tag: "意动形" },
+        { name: "#牙慧", term: "牙慧", date: "2025-1-2", tag: "牙慧" },
+        { name: "#84力", term: "84力", date: "2025-1-9", tag: "84力" },
+        { name: "#再矿化", term: "再矿化", date: "2025-1-6", tag: "再矿化" },
+        { name: "#宇宙编程员", term: "宇宙编程", date: "2025-3-11", tag: "宇宙编程员" },
+        { name: "#脱矿化", term: "脱矿化", date: "2025-1-6", tag: "脱矿化" },
+        { name: "#牙齿纪念碑", term: "牙齿", date: "2025-1-7", tag: "牙齿纪念碑" },
+        { name: "#第七维度", term: "第七维度", date: "2025-4-4", tag: "第七维度" },
+        { name: "#137层", term: "137层", date: "2025-3-29", tag: "137层" }
+    ];
+
+    // ========== 默认日记数据（仅保留2023-2025示例） ==========
+    const defaultDiaryData = {
+        "2023": {
+            "1": {
+                "1": { 
+                    original: "本来の目的は2023.1.1日曜日ですと伝えたが、思いが上げると以前の年始を調べた後で、この連続結果2018-2023[1-7]がある!木曜日だけを空いた。\n\n武和舞有什么区别?二者相通但功夫更胜一筹.\nーー踊るのは音楽が必要ですが、音楽の力に従って自然に軽い気持ちに踊る。武術は現実の末端を届けて成果を掴む。夢想と現実の表示ですね。それで、世界はある見えない位置にこの踊る夢を行き続ける後で、私の成果の末端を襲う武術は張る。これこそは両方の世界の夢と存在の土台ですね。\n\n明けましておめでとう、この挨拶は2018から2023年までの月曜日と日曜日の明の単語を初める。人々は新しい生活は今年の年始から来るんです。\n想像力と創造力は日本語で同じ音ですが、中国語で違う声ですね。それで、日本人はさらに思想が起源ですと思うだろう。人間の思想は自分の人生に関するものと重要ですが、しかし、自分の頭の思想が何から来るのと知ったか? このたくさんの想像力の思想を扱えるの? もし自分のロジックがないと危ないですよ。混乱があるし、錯乱状態があるしましたなあ。\n今日は3歳の女の子の動画を見た。小さい女は自分の家族を超えた。彼女は前向き考え方あるいは回った思想方法ができる。それぞれの方向の思いが踊る全て思想と武術を利用して、自分の最後の目的を届いた。",
+                    zh: "我本想告诉你今天是2023年1月1日，星期日，但当我追溯过往的新年时，发现了这个连续的结果2018-2023[1-7]！只有星期四空缺。\n\n武和舞有什么区别？二者相通但功夫更胜一筹。\n——舞蹈需要音乐，随着音乐的力量自然轻快地起舞。武术则是触及现实的末端，抓住成果。这是梦想和现实的体现。世界在某个看不见的位置继续着这个舞蹈的梦，随后，袭击我成果末端的武术就会展开。这正是双方世界梦想与存在的基础。\n\n新年快乐，这个问候开启了从2018年到2023年周一和周日的“明”字。人们的新生活从今年年初开始。\n想象力和创造力在日语中是同音词，但在中文里发音不同。所以，日本人大概会觉得思想是起源吧。人的思想关系到自己的人生，这很重要。但是，你知道自己头脑中的思想从何而来吗？你能处理好这大量的想象出来的思想吗？如果没有自己的逻辑，会很危险的。会混乱，会陷入错乱状态。\n今天我看了个3岁小女孩的视频。这个小女孩超越了她的家庭。她能进行正向思考或者旋转式的思考方法。她利用各个方向的思想、舞蹈和武术，抵达了自己的最终目的。",
+                    en: "I intended to tell you that today is Sunday, January 1, 2023, but when I traced back the beginnings of previous years, I discovered this continuous result 2018-2023[1-7]! Only Thursday is empty.\n\nWhat is the difference between martial arts and dance? The two are connected, but kung fu is superior.\n——Dancing requires music; you dance lightly and naturally according to the power of the music. Martial arts, on the other hand, reaches the ends of reality to grasp achievements. This is a representation of dreams and reality. So, after the world continues this dancing dream in some invisible place, the martial arts that attack the ends of my achievements spread out. This is precisely the foundation of the dreams and existence of both worlds.\n\nHappy New Year. This greeting begins the words of 'light/brightness' for the Mondays and Sundays from 2018 to 2023. People's new lives come from the beginning of this year.\nImagination and creativity have the same sound in Japanese, but different sounds in Chinese. So, Japanese people probably think that thoughts are the origin. Human thoughts are important, relating to one's own life. But do you know where the thoughts in your own head come from? Can you handle this vast amount of imaginative thoughts? If you don't have your own logic, it's dangerous. There will be chaos, a state of confusion.\nToday I watched a video of a 3-year-old girl. This little girl surpassed her family. She can engage in forward-thinking or circular thinking methods. Using all the thoughts, dance, and martial arts from every direction, she arrived at her final goal.",
+                    ja: "本来の目的は2023.1.1日曜日ですと伝えたが、思いが上げると以前の年始を調べた後で、この連続結果2018-2023[1-7]がある!木曜日だけを空いた。\n\n武和舞有什么区别?二者相通但功夫更胜一筹.\nーー踊るのは音楽が必要ですが、音楽の力に従って自然に軽い気持ちに踊る。武術は現実の末端を届けて成果を掴む。夢想と現実の表示ですね。それで、世界はある見えない位置にこの踊る夢を行き続ける後で、私の成果の末端を襲う武術は張る。これこそは両方の世界の夢と存在の土台ですね。\n\n明けましておめでとう、この挨拶は2018から2023年までの月曜日と日曜日の明の単語を初める。人々は新しい生活は今年の年始から来るんです。\n想像力と創造力は日本語で同じ音ですが、中国語で違う声ですね。それで、日本人はさらに思想が起源ですと思うだろう。人間の思想は自分の人生に関するものと重要ですが、しかし、自分の頭の思想が何から来るのと知ったか? このたくさんの想像力の思想を扱えるの? もし自分のロジックがないと危ないですよ。混乱があるし、錯乱状態があるしましたなあ。\n今日は3歳の女の子の動画を見た。小さい女は自分の家族を超えた。彼女は前向き考え方あるいは回った思想方法ができる。それぞれの方向の思いが踊る全て思想と武術を利用して、自分の最後の目的を届いた。",
+                    tags: ["真爱","开始"]
+                },
+                "2": { 
+                    original: "2022年至少有20位俄罗斯富豪神秘死亡.\n\nーー俄罗斯紅肠は美味しないと感じた。天然気など自然の資源を扱える人々が死んだってなぜか分からないが、ロシアは世界の土台として思いがした。それで7の位置で、30-60歳の男と家族を消えた。2022, にせん、にじゅうに。常に年です。どうして自分の生命を襲うの?\n\n骑奇马，张长弓，琴瑟琵琶，八大王，并肩居头上，单戈独戦。\n\n倭委人，袭龙衣，魑魅魍魉，四小鬼，屈膝跪身旁，合手擒拿。\n\nーー白儿ム,ロシアの死んだ人が関係があるか?。この対聯は私たちの話じゃませんか?\n\n蒙托石散，它都已经冲到了热搜榜第一。\n\nーー昨日は蒙脱石散を見た、染みだが韓国語です。mo on, 蒙恩? 石散?\n\n訪れると尋ねるはいつも覚えないから、ずっと考えた。とず、たず,私の生死図の? O上図来るんだよ、彼女の図数の?それで、私を訪れるあなたたちの行動は混乱状態が起こた。身を捨てて法を求めるの? この文は私たちの両方を指している。この両方は全て失敗したはいいですか?病毒の特徴ですね。私はこの今の世界には自分の仕事をしたが私の簡単の思いですが、ずっと完成できない。なぜ? 私たちの目的が違うですから。神様公式は私たちの違う目的を隠してるが、それで両方の健康の標準が違うです。私は人類の愛の健康と存在の健康と人類の生活の健康が私の複合目的です。あなた方のは?\n\nこんにちはの様子です。aiueo過程の位置にとって口に入る話が得る。だから、多分シミだ思想を伝えた方法はこのような五つの過程ですね。世界の得る思想が同じです。だから、一切は分かりました。古い世界の五つの能力です。\n\n文法と発音は東京と京都の関係ようになりましたか?それで、名古屋は日常発言だろう。\n\n西洋は猫ですが、東方は熊ですね。それで組み合わせるものはパンダさんです。最高の過去と未来です。しかし現在は失ってるのに。",
+                    zh: "2022年至少有20位俄罗斯富豪神秘死亡。\n\n——我觉得俄罗斯红肠不好吃。不知道为什么那些能处理天然气等自然资源的人死了，但我觉得俄罗斯是世界的基石。所以在7的位置，30-60岁的男人和他们的家庭消失了。2022年，常在这一年。为什么要攻击自己的生命？\n\n骑奇马，张长弓，琴瑟琵琶，八大王，并肩居头上，单戈独戦。\n\n倭委人，袭龙衣，魑魅魍魉，四小鬼，屈膝跪身旁，合手擒拿。\n\n——白儿姆，和俄罗斯死去的人有关吗？这个对联难道不是我们的话题吗？\n\n蒙托石散，它都已经冲到了热搜榜第一。\n\n——昨天我看到了蒙脱石散，是污渍，但它是韩语。mo on，蒙恩？石散？\n\n我总是记不住“访”和“寻”的区别，所以一直在想。とず、たず，是我的生死图吗？来自上方的图，是她图上的数字？所以，你们来拜访我的行动引发了混乱状态。是舍身求法吗？这句话指的是我们双方。这两方都失败了吗？是病毒的特征吧。在这个世界上，我做了我的工作，这是我简单的想法，但一直无法完成。为什么？因为我们的目的不同。神之公式隐藏了我们不同的目的，所以双方的健康标准也不同。我的复合目的是人类爱的健康、存在的健康、人类生活的健康。你们的呢？\n\n像“你好”的样子。对于aiueo过程的位置，可以得到进入口中的话语。所以，也许像污点一样传达思想的方法就是这五个过程。世界获得的思想是相同的。所以，我一切都明白了。旧世界的五种能力。\n\n语法和发音变得像东京和京都的关系了吗？所以，名古屋大概是日常用语吧。\n\n西方是猫，但东方是熊。所以，组合起来的东西就是熊猫。最好的过去和未来。但现在却失去了。",
+                    en: "At least 20 Russian billionaires died mysteriously in 2022.\n\n——I felt that Russian sausage wasn't delicious. I don't know why the people who can handle natural resources like natural gas died, but I thought Russia is the foundation of the world. So, in position 7, men aged 30-60 and their families disappeared. 2022, consistently this year. Why attack your own life?\n\nRiding a strange horse, drawing a long bow, qin se pi pa, eight great kings, standing shoulder to shoulder on the head, fighting alone with a single spear.\n\nThe Japanese people, attacking the dragon robe, demons and monsters, four little ghosts, kneeling by the side, captured with both hands.\n\n——Is it related to the dead people in Russia? Isn't this couplet our topic?\n\nMontmorillonite powder has rushed to the top of the hot search list.\n\n——Yesterday I saw montmorillonite powder, a stain, but it's Korean. mo on, Meng en? Stone powder?\n\nI can't remember the difference between 'visit' and 'ask', so I kept thinking. tozu, tazu, is it my birth and death graph? It comes from the upper diagram, the number on her graph? So, your actions to visit me caused a state of chaos. Is it 'seeking the Dharma by abandoning oneself'? This sentence refers to both of us. Are both sides failures? It's a characteristic of the virus, isn't it? In this world now, I do my work with my simple thoughts, but it's never completed. Why? Because our purposes are different. The divine formula hides our different purposes, so the health standards for both sides are different. My compound purpose is the health of human love, the health of existence, and the health of human life. What about yours?\n\nIt looks like 'hello'. For the position of the aiueo process, one can obtain words that enter the mouth. So, perhaps the method of conveying thoughts like a stain is this five-step process. The thoughts the world obtains are the same. So, I understand everything. The five abilities of the old world.\n\nHave grammar and pronunciation become like the relationship between Tokyo and Kyoto? So, Nagoya is probably everyday speech.\n\nThe West is a cat, but the East is a bear. So, the combination is a panda. The best of the past and the future. But now it is lost.",
+                    ja: "2022年至少有20位俄罗斯富豪神秘死亡.\n\nーー俄罗斯紅肠は美味しないと感じた。天然気など自然の資源を扱える人々が死んだってなぜか分からないが、ロシアは世界の土台として思いがした。それで7の位置で、30-60歳の男と家族を消えた。2022, にせん、にじゅうに。常に年です。どうして自分の生命を襲うの?\n\n骑奇马，张长弓，琴瑟琵琶，八大王，并肩居头上，单戈独戦。\n\n倭委人，袭龙衣，魑魅魍魉，四小鬼，屈膝跪身旁，合手擒拿。\n\nーー白儿ム,ロシアの死んだ人が関係があるか?。この対聯は私たちの話じゃませんか?\n\n蒙托石散，它都已经冲到了热搜榜第一。\n\nーー昨日は蒙脱石散を見た、染みだが韓国語です。mo on, 蒙恩? 石散?\n\n訪れると尋ねるはいつも覚えないから、ずっと考えた。とず、たず,私の生死図の? O上図来るんだよ、彼女の図数の?それで、私を訪れるあなたたちの行動は混乱状態が起こた。身を捨てて法を求めるの? この文は私たちの両方を指している。この両方は全て失敗したはいいですか?病毒の特徴ですね。私はこの今の世界には自分の仕事をしたが私の簡単の思いですが、ずっと完成できない。なぜ? 私たちの目的が違うですから。神様公式は私たちの違う目的を隠してるが、それで両方の健康の標準が違うです。私は人類の愛の健康と存在の健康と人類の生活の健康が私の複合目的です。あなた方のは?\n\nこんにちはの様子です。aiueo過程の位置にとって口に入る話が得る。だから、多分シミだ思想を伝えた方法はこのような五つの過程ですね。世界の得る思想が同じです。だから、一切は分かりました。古い世界の五つの能力です。\n\n文法と発音は東京と京都の関係ようになりましたか?それで、名古屋は日常発言だろう。\n\n西洋は猫ですが、東方は熊ですね。それで組み合わせるものはパンダさんです。最高の過去と未来です。しかし現在は失ってるのに。",
+                    tags: ["噪音"]
+                }
+            },
+            "4": {
+                "2": { original: "", zh: "意动形是创造的三层结构：意是灵性本源，动是心与情感，形是身体沉淀。", en: "Will-Motion-Shape is the three-layer structure of creation: Will is spiritual origin, Motion is heart and emotion, Shape is body precipitation.", ja: "意動形は創造の三層構造：意は霊性の本源、動は心と感情、形は身体の沈殿。", tags: ["意动形"] }
+            }
+        },
+        "2024": {
+            "1": {
+                "1": { original: "", zh: "我是重启宇宙的立法者。旧世界只是我的过去。", en: "I am the legislator who restarts the universe. The old world is just my past.", ja: "私は宇宙を再起動する立法者だ。旧世界はただの過去に過ぎない。", tags: ["重启","立法者"] }
+            }
+        },
+        "2025": {
+            "1": {
+                "2": { original: "", zh: "这世界让我玩遍了，所以感觉没有好奇心了。美国51个州，可能就是我的最大的牙慧。", en: "The world has been fully explored by me, so curiosity fades. America's 51 states may be my biggest 'tooth wisdom'.", ja: "世界を遊び尽くしたので、好奇心が薄れた。アメリカの51州は、私の最大の「歯の知恵」かもしれない。", tags: ["牙慧"] },
+                "6": { original: "", zh: "牙齿的三体全息于人类三体、人自身的进化保障宇宙灵性持续矿化。", en: "Teeth Trinity holographically corresponds to human Trinity, human evolution ensures the continuous mineralization of cosmic spirit.", ja: "歯の三体は人間の三体にホログラフィック対応し、人間の進化は宇宙霊性の持続的な石灰化を保証する。", tags: ["牙齿纪念碑","再矿化"] },
+                "9": { original: "", zh: "力就是意图和先天品性、84力模型构建。", en: "Force = intention & innate quality, 84-force model construction.", ja: "力＝意図・先天的品性、84力モデル構築。", tags: ["84力"] }
+            },
+            "3": {
+                "11": { original: "", zh: "宇宙是我编程的智能体，随我技能进化而进化。", en: "The universe is an intelligent agent I program, evolving with my skills.", ja: "宇宙は私がプログラムする知能体であり、私のスキルとともに進化する。", tags: ["宇宙编程员"] },
+                "29": { original: "", zh: "137层不完备定理。", en: "137 layers of incompleteness theorems.", ja: "137層の不完全性定理。", tags: ["137层"] }
+            },
+            "4": {
+                "4": { original: "", zh: "第七灵性维度。", en: "The seventh spiritual dimension.", ja: "第七の霊性次元。", tags: ["第七维度"] }
+            }
+        }
+    };
+
+    // ========== 核心概念数据（可编辑） ==========
+    let concepts = {};
+
+    // ========== 用户编辑的日记存储 ==========
+    let userEditedDiary = {};
+
+    // ========== 当前日记页状态 ==========
+    let currentYear = 2023;
+    let currentMonth = null;
+    let currentDay = null;
+    let currentLang = 'original';
+
+    // ========== 初始化 ==========
+    function init() {
+        loadUserEditedDiary();
+        initKeywordMap();
+        initConcepts();
+        renderTermGrids();
+        renderMonths();
+        initCollapsibleYears();  // 初始化左右折叠年份
+        switchLang('original');
+        // 默认激活2023
+        document.querySelectorAll('.year-tab').forEach(t => {
+            if (parseInt(t.innerText) === 2023) t.classList.add('active');
+        });
+    }
+
+    // 初始化折叠年份区域
+    function initCollapsibleYears() {
+        const beforeDiv = document.getElementById('yearsBefore');
+        const afterDiv = document.getElementById('yearsAfter');
+        // 2013-2022
+        for (let y = 2013; y <= 2022; y++) {
+            let btn = document.createElement('span');
+            btn.className = 'year-mini';
+            btn.innerText = y;
+            btn.onclick = () => switchYear(y);
+            beforeDiv.appendChild(btn);
+        }
+        // 2026-2035
+        for (let y = 2026; y <= 2035; y++) {
+            let btn = document.createElement('span');
+            btn.className = 'year-mini';
+            btn.innerText = y;
+            btn.onclick = () => switchYear(y);
+            afterDiv.appendChild(btn);
+        }
+    }
+
+    // 切换折叠区域的显示
+    window.toggleYears = function(side) {
+        if (side === 'before') {
+            document.getElementById('yearsBefore').classList.toggle('show');
+        } else {
+            document.getElementById('yearsAfter').classList.toggle('show');
+        }
+    };
+
+    // ========== 导入导出三年日记 ==========
+    window.exportAllYearsDiary = function() {
+        const exportData = {
+            defaultData: defaultDiaryData,
+            userEdited: userEditedDiary
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `创世纪日记_三年_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+    };
+
+    window.importAllYearsDiary = function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const imported = JSON.parse(ev.target.result);
+                    if (imported.userEdited) {
+                        userEditedDiary = imported.userEdited;
+                        saveUserEditedDiary();
+                    }
+                    alert('导入成功');
+                    if (currentYear && currentMonth && currentDay) {
+                        updateContent();
+                    }
+                } catch(err) {
+                    alert('导入失败');
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    };
+
+    // ========== 全局搜索 ==========
+    window.globalSearch = function() {
+        const keyword = document.getElementById('globalSearchInput').value.toLowerCase().trim();
+        const resultsDiv = document.getElementById('globalResults');
+        
+        if (!keyword) {
+            resultsDiv.classList.add('hidden');
+            return;
+        }
+        
+        const results = [];
+
+        // 搜索术语
+        const allTerms = [...terms2023, ...terms2024, ...terms2025];
+        allTerms.forEach(term => {
+            if (term.toLowerCase().includes(keyword)) {
+                results.push({ type: 'term', term: term });
+            }
+        });
+
+        // 搜索核心概念
+        Object.keys(concepts).forEach(tag => {
+            const def = concepts[tag] || '';
+            if (tag.toLowerCase().includes(keyword) || def.toLowerCase().includes(keyword)) {
+                results.push({ type: 'concept', tag: tag, term: '#' + tag });
+            }
+        });
+
+        // 搜索三年日记
+        for (let year in defaultDiaryData) {
+            for (let month in defaultDiaryData[year]) {
+                for (let day in defaultDiaryData[year][month]) {
+                    const entry = defaultDiaryData[year][month][day];
+                    const searchText = `${entry.original || ''} ${entry.zh || ''} ${entry.en || ''} ${entry.ja || ''} ${entry.tags.join(' ')}`.toLowerCase();
+                    if (searchText.includes(keyword)) {
+                        results.push({ type: 'diary', year: year, month: month, day: day, title: `${year}-${month}-${day}` });
+                    }
+                }
+            }
+        }
+
+        // 搜索用户编辑日记
+        for (let key in userEditedDiary) {
+            const entry = userEditedDiary[key];
+            const searchText = `${entry.original || ''} ${entry.zh || ''} ${entry.en || ''} ${entry.ja || ''} ${entry.tags?.join(' ') || ''}`.toLowerCase();
+            if (searchText.includes(keyword)) {
+                const [year, month, day] = key.split('-');
+                results.push({ type: 'diary', year: year, month: month, day: day, title: `${year}-${month}-${day}` });
+            }
+        }
+
+        // 显示结果
+        if (results.length === 0) {
+            resultsDiv.innerHTML = '<div style="padding:16px; text-align:center;">无结果</div>';
+            resultsDiv.classList.remove('hidden');
+            return;
+        }
+
+        let html = '';
+        results.slice(0, 15).forEach(r => {
+            if (r.type === 'term') {
+                html += `<div class="global-result-item" onclick="showTermDetail('${r.term}')">📘 术语: ${r.term}</div>`;
+            } else if (r.type === 'concept') {
+                html += `<div class="global-result-item" onclick="jumpToConcept('${r.tag}')">📚 概念: ${r.term}</div>`;
+            } else if (r.type === 'diary') {
+                html += `<div class="global-result-item" onclick="jumpToDiaryDate(${r.year},${r.month},${r.day})">📔 日记: ${r.title}</div>`;
+            }
+        });
+
+        resultsDiv.innerHTML = html;
+        resultsDiv.classList.remove('hidden');
+    };
+
+    window.jumpToDiaryDate = function(year, month, day) {
+        enterMain();
+        switchMainTab('diary');
+        switchYear(parseInt(year));
+        setTimeout(() => {
+            selectMonth(parseInt(month));
+            setTimeout(() => {
+                selectDay(parseInt(day));
+            }, 100);
+        }, 100);
+        document.getElementById('globalResults').classList.add('hidden');
+    };
+
+    window.jumpToConcept = function(tag) {
+        enterMain();
+        switchMainTab('diary');
+        const concept = document.getElementById(`概念-${tag}`);
+        if (concept) concept.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('globalResults').classList.add('hidden');
+    };
+
+    // ========== 核心概念函数 ==========
+    function initConcepts() {
+        const saved = localStorage.getItem('concepts');
+        if (saved) {
+            try { concepts = JSON.parse(saved); } catch(e) { concepts = {}; }
+        } else {
+            keywordMap.forEach(k => {
+                concepts[k.tag] = getConceptDef(k.tag);
+            });
+        }
+        renderConcepts();
+    }
+
+    function saveConcepts() {
+        localStorage.setItem('concepts', JSON.stringify(concepts));
+    }
+
+    function renderConcepts() {
+        const container = document.getElementById('conceptsContainer');
+        let html = '';
+        keywordMap.forEach(k => {
+            const def = concepts[k.tag] || getConceptDef(k.tag);
+            html += `<div class="concept" id="概念-${k.tag}">
+                <div class="concept-term">
+                    ${k.name}
+                    <span class="edit-concept-btn" onclick="editSingleConcept('${k.tag}')">✏️ 编辑</span>
+                </div>
+                <div class="concept-def" id="def-${k.tag}">${def}</div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function getConceptDef(tag) {
+        const defs = {
+            "真爱": "宇宙的本体，创造的源泉。",
+            "噪音": "旧世界对创新者的围剿形式。",
+            "夸克三体": "意-动-形，宇宙的最小单位。",
+            "意动形": "创造的三层结构：意(灵性)、动(心)、形(身体)。",
+            "宇宙编程员": "编写宇宙源代码的存在，万物是被编程的系统。",
+            "牙慧": "旧世界抄袭的产物，牙齿是宇宙真意纪念碑。",
+            "84力": "7原型力 × 2镜像 × 3三体 × 2上下颌 = 84力。",
+            "再矿化": "持续创新、沉淀新的宇宙真意。",
+            "脱矿化": "被旧世界腐蚀，停止进化。",
+            "牙齿纪念碑": "牙齿是宇宙灵性在物质世界最坚硬的纪念碑。",
+            "第七维度": "物理学遗漏的灵性维度，与DNA螺旋周期匹配。",
+            "137层": "精细结构常数1/137，创世主预设的137个创新层级。"
+        };
+        return defs[tag] || "（待编辑）";
+    }
+
+    window.editSingleConcept = function(tag) {
+        const currentDef = concepts[tag] || getConceptDef(tag);
+        const newDef = prompt(`编辑 "${tag}" 的定义:`, currentDef);
+        if (newDef !== null) {
+            concepts[tag] = newDef;
+            saveConcepts();
+            renderConcepts();
+        }
+    };
+
+    window.editAllConcepts = function() {
+        const textarea = document.createElement('textarea');
+        textarea.style.width = '100%';
+        textarea.style.height = '300px';
+        textarea.style.padding = '10px';
+        textarea.style.borderRadius = '15px';
+        textarea.style.border = '1px solid #6a4f6d';
+        textarea.style.background = '#b28ab2';
+        textarea.style.color = '#2a1e2c';
+        
+        let content = '';
+        keywordMap.forEach(k => {
+            content += `${k.name}: ${concepts[k.tag] || getConceptDef(k.tag)}\n\n`;
+        });
+        textarea.value = content;
+
+        const div = document.createElement('div');
+        div.style.position = 'fixed';
+        div.style.top = '50%';
+        div.style.left = '50%';
+        div.style.transform = 'translate(-50%, -50%)';
+        div.style.width = '80%';
+        div.style.maxWidth = '600px';
+        div.style.maxHeight = '80vh';
+        div.style.overflow = 'auto';
+        div.style.background = '#d9b8c4';
+        div.style.color = '#2a1e2c';
+        div.style.padding = '20px';
+        div.style.borderRadius = '30px';
+        div.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+        div.style.zIndex = '1000';
+        
+        div.innerHTML = `
+            <h3 style="margin-bottom:15px; color:#2a1e2c;">编辑核心概念</h3>
+            <p style="color:#2a1e2c; margin-bottom:10px;">格式：术语: 定义（每行一个）</p>
+        `;
+        div.appendChild(textarea);
+        
+        const btnDiv = document.createElement('div');
+        btnDiv.style.display = 'flex';
+        btnDiv.style.gap = '10px';
+        btnDiv.style.marginTop = '15px';
+        
+        const saveBtn = document.createElement('button');
+        saveBtn.innerText = '保存';
+        saveBtn.style.flex = '1';
+        saveBtn.style.padding = '12px';
+        saveBtn.style.background = '#6a4f6d';
+        saveBtn.style.color = '#f5e6f5';
+        saveBtn.style.border = 'none';
+        saveBtn.style.borderRadius = '40px';
+        saveBtn.style.cursor = 'pointer';
+        saveBtn.onclick = function() {
+            const lines = textarea.value.split('\n');
+            lines.forEach(line => {
+                if (line.includes(':')) {
+                    const [term, def] = line.split(':').map(s => s.trim());
+                    const keyword = keywordMap.find(k => k.name === term);
+                    if (keyword) {
+                        concepts[keyword.tag] = def;
+                    }
+                }
+            });
+            saveConcepts();
+            renderConcepts();
+            document.body.removeChild(div);
+        };
+        
+        const cancelBtn = document.createElement('button');
+        cancelBtn.innerText = '取消';
+        cancelBtn.style.flex = '1';
+        cancelBtn.style.padding = '12px';
+        cancelBtn.style.background = '#b28ab2';
+        cancelBtn.style.color = '#2a1e2c';
+        cancelBtn.style.border = '1px solid #6a4f6d';
+        cancelBtn.style.borderRadius = '40px';
+        cancelBtn.style.cursor = 'pointer';
+        cancelBtn.onclick = function() {
+            document.body.removeChild(div);
+        };
+        
+        btnDiv.appendChild(saveBtn);
+        btnDiv.appendChild(cancelBtn);
+        div.appendChild(btnDiv);
+        
+        document.body.appendChild(div);
+    };
+
+    // ========== 术语详情页 ==========
+    window.showTermDetail = function(term) {
+        const def = getTermDefinition(term);
+        
+        const html = `
+            <div class="term-detail-header">
+                <span class="term-detail-term">${term}</span>
+                <span class="term-detail-back" onclick="hideTermDetail()">返回</span>
+            </div>
+            <div class="term-detail-swipe">
+                <div class="term-detail-card">
+                    <div class="term-detail-lang">中</div>
+                    <div class="term-detail-def">${def.zh}</div>
+                </div>
+                <div class="term-detail-card">
+                    <div class="term-detail-lang">EN</div>
+                    <div class="term-detail-def">${def.en}</div>
+                </div>
+                <div class="term-detail-card">
+                    <div class="term-detail-lang">日</div>
+                    <div class="term-detail-def">${def.ja}</div>
+                </div>
+            </div>
+            <div style="text-align:center; color:#2a1e2c; margin-top:8px;">← 左右滑动切换语言 →</div>
+        `;
+        
+        document.getElementById('termDetailPage').innerHTML = html;
+        
+        document.getElementById('diaryPage').classList.remove('active');
+        document.getElementById('termsPage').classList.remove('active');
+        document.getElementById('termDetailPage').classList.add('active');
+    };
+
+    window.hideTermDetail = function() {
+        document.getElementById('termDetailPage').classList.remove('active');
+        document.getElementById('termsPage').classList.add('active');
+    };
+
+    // ========== 封面点击术语跳转 ==========
+    window.jumpToTermFromCover = function(term) {
+        enterMain();
+        switchMainTab('terms');
+        showTermDetail(term);
+        document.getElementById('globalResults').classList.add('hidden');
+    };
+
+    // ========== 加载用户编辑的日记 ==========
+    function loadUserEditedDiary() {
+        const saved = localStorage.getItem('userEditedDiary');
+        if (saved) {
+            try { userEditedDiary = JSON.parse(saved); } catch(e) { userEditedDiary = {}; }
+        }
+    }
+
+    function saveUserEditedDiary() {
+        localStorage.setItem('userEditedDiary', JSON.stringify(userEditedDiary));
+    }
+
+    // 获取某日期的实际内容（用户编辑优先）
+    function getEntry(year, month, day) {
+        const key = `${year}-${month}-${day}`;
+        if (userEditedDiary[key]) {
+            return userEditedDiary[key];
+        }
+        try {
+            return defaultDiaryData[year]?.[month]?.[day];
+        } catch {
+            return null;
+        }
+    }
+
+    // 封面关键词
+    function initKeywordMap() {
+        const container = document.getElementById('keywordMap');
+        keywordMap.forEach(k => {
+            const btn = document.createElement('button');
+            btn.className = 'keyword-btn';
+            btn.innerText = k.name;
+            btn.onclick = () => jumpToTermFromCover(k.term);
+            container.appendChild(btn);
+        });
+    }
+
+    // ========== 页面切换 ==========
+    window.enterMain = function() {
+        document.getElementById('coverPage').style.display = 'none';
+        document.getElementById('mainSection').style.display = 'block';
+    };
+
+    window.showCover = function() {
+        document.getElementById('coverPage').style.display = 'flex';
+        document.getElementById('mainSection').style.display = 'none';
+    };
+
+    window.switchMainTab = function(tab) {
+        document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+        
+        if (tab === 'diary') {
+            document.querySelector('.main-tab').classList.add('active');
+            document.getElementById('diaryPage').classList.add('active');
+            document.getElementById('termsPage').classList.remove('active');
+            document.getElementById('termDetailPage').classList.remove('active');
+        } else if (tab === 'terms') {
+            document.querySelectorAll('.main-tab')[1].classList.add('active');
+            document.getElementById('diaryPage').classList.remove('active');
+            document.getElementById('termsPage').classList.add('active');
+            document.getElementById('termDetailPage').classList.remove('active');
+        }
+    };
+
+    // ========== 折叠天数网格 ==========
+    window.toggleDaysGrid = function() {
+        document.getElementById('daysGrid').classList.toggle('collapsed');
+    };
+
+    // ========== 日记页函数 ==========
+    window.switchYear = function(year) {
+        currentYear = year;
+        currentMonth = null;
+        currentDay = null;
+        // 更新年份激活状态
+        document.querySelectorAll('.year-tab, .year-mini').forEach(el => {
+            el.classList.remove('active');
+        });
+        // 如果是固定显示的年份
+        document.querySelectorAll('.year-tab').forEach(t => {
+            if (parseInt(t.innerText) === year) t.classList.add('active');
+        });
+        // 如果是折叠区的小年份
+        document.querySelectorAll('.year-mini').forEach(m => {
+            if (parseInt(m.innerText) === year) m.classList.add('active');
+        });
+        renderMonths();
+        document.getElementById('daysGrid').innerHTML = '';
+        document.getElementById('entryCard').style.display = 'none';
+        // 如果折叠区开着，可以选择关闭（可选，这里不自动关闭）
+    };
+
+    function renderMonths() {
+        const container = document.getElementById('monthsContainer');
+        let html = '';
+        for (let m = 1; m <= 12; m++) {
+            html += `<div class="month-btn" data-month="${m}" onclick="selectMonth(${m})">${m}月</div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    window.selectMonth = function(month) {
+        currentMonth = month.toString();
+        document.querySelectorAll('.month-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.month === currentMonth);
+        });
+        renderDays();
+        document.getElementById('entryCard').style.display = 'none';
+    };
+
+    function renderDays() {
+        if (!currentMonth) return;
+        const daysInMonth = new Date(currentYear, parseInt(currentMonth), 0).getDate();
+        let html = '';
+        for (let d = 1; d <= daysInMonth; d++) {
+            html += `<div class="day-btn" data-day="${d}" onclick="selectDay(${d})">${d}</div>`;
+        }
+        document.getElementById('daysGrid').innerHTML = html;
+    }
+
+    window.selectDay = function(day) {
+        currentDay = day.toString();
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.classList.toggle('selected', btn.dataset.day === currentDay);
+        });
+        updateContent();
+        document.getElementById('entryCard').style.display = 'block';
+    };
+
+    // 切换编辑区显示/隐藏
+    window.toggleEditArea = function() {
+        const editArea = document.getElementById('editArea');
+        editArea.classList.toggle('visible');
+    };
+
+    function updateContent() {
+        const entry = getEntry(currentYear, currentMonth, currentDay);
+        if (entry) {
+            document.getElementById('originalContent').innerHTML = (entry.original || '').replace(/\n/g, '<br>') + '<div class="tag-list">' + (entry.tags || []).map(t => `<span class="tag" onclick="jumpToConcept('${t}')">#${t}</span>`).join('') + '</div>';
+            document.getElementById('zhContent').innerHTML = (entry.zh || '').replace(/\n/g, '<br>') + '<div class="tag-list">' + (entry.tags || []).map(t => `<span class="tag" onclick="jumpToConcept('${t}')">#${t}</span>`).join('') + '</div>';
+            document.getElementById('enContent').innerHTML = (entry.en || '').replace(/\n/g, '<br>') + '<div class="tag-list">' + (entry.tags || []).map(t => `<span class="tag" onclick="jumpToConcept('${t}')">#${t}</span>`).join('') + '</div>';
+            document.getElementById('jaContent').innerHTML = (entry.ja || '').replace(/\n/g, '<br>') + '<div class="tag-list">' + (entry.tags || []).map(t => `<span class="tag" onclick="jumpToConcept('${t}')">#${t}</span>`).join('') + '</div>';
+            
+            // 填充编辑框
+            document.getElementById('editOriginal').value = entry.original || '';
+            document.getElementById('editZh').value = entry.zh || '';
+            document.getElementById('editEn').value = entry.en || '';
+            document.getElementById('editJa').value = entry.ja || '';
+            
+            // 渲染标签
+            renderCurrentTags(entry.tags || []);
+        } else {
+            document.getElementById('originalContent').innerHTML = '<p>无记录</p>';
+            document.getElementById('zhContent').innerHTML = '<p>无记录</p>';
+            document.getElementById('enContent').innerHTML = '<p>no entry</p>';
+            document.getElementById('jaContent').innerHTML = '<p>記録なし</p>';
+            document.getElementById('editOriginal').value = '';
+            document.getElementById('editZh').value = '';
+            document.getElementById('editEn').value = '';
+            document.getElementById('editJa').value = '';
+            document.getElementById('currentTags').innerHTML = '';
+        }
+    }
+
+    function renderCurrentTags(tags) {
+        const container = document.getElementById('currentTags');
+        let html = '';
+        tags.forEach(t => {
+            html += `<span class="tag-item">#${t}<span class="tag-remove" onclick="removeTagFromEntry('${t}')">✕</span></span>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.addTagToCurrentEntry = function() {
+        const input = document.getElementById('tagInput');
+        const tag = input.value.trim();
+        if (!tag) return;
+        
+        const key = `${currentYear}-${currentMonth}-${currentDay}`;
+        const existingEntry = getEntry(currentYear, currentMonth, currentDay);
+        if (!existingEntry) {
+            // 如果没有现有条目，创建一个空条目（所有语言为空）
+            const newEntry = {
+                original: '',
+                zh: '',
+                en: '',
+                ja: '',
+                tags: []
+            };
+            if (!newEntry.tags.includes(tag)) {
+                newEntry.tags.push(tag);
+            }
+            userEditedDiary[key] = newEntry;
+        } else {
+            const newEntry = {
+                original: existingEntry.original || '',
+                zh: existingEntry.zh || '',
+                en: existingEntry.en || '',
+                ja: existingEntry.ja || '',
+                tags: existingEntry.tags ? [...existingEntry.tags] : []
+            };
+            if (!newEntry.tags.includes(tag)) {
+                newEntry.tags.push(tag);
+            }
+            userEditedDiary[key] = newEntry;
+        }
+        saveUserEditedDiary();
+        
+        input.value = '';
+        updateContent();
+    };
+
+    window.removeTagFromEntry = function(tag) {
+        const key = `${currentYear}-${currentMonth}-${currentDay}`;
+        const existingEntry = getEntry(currentYear, currentMonth, currentDay);
+        if (!existingEntry) return;
+        
+        const newEntry = {
+            original: existingEntry.original || '',
+            zh: existingEntry.zh || '',
+            en: existingEntry.en || '',
+            ja: existingEntry.ja || '',
+            tags: existingEntry.tags ? existingEntry.tags.filter(t => t !== tag) : []
+        };
+        
+        userEditedDiary[key] = newEntry;
+        saveUserEditedDiary();
+        
+        updateContent();
+    };
+
+    window.switchLang = function(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-tab').forEach(t => {
+            t.classList.toggle('active', t.innerText.includes(
+                lang === 'original' ? '原文' : 
+                lang === 'zh' ? '中文' : 
+                lang === 'en' ? 'English' : '日本語'
+            ));
+        });
+        document.querySelectorAll('.lang-content').forEach(c => {
+            c.classList.toggle('active', c.id.toLowerCase().includes(
+                lang === 'original' ? 'original' : lang
+            ));
+        });
+    };
+
+    window.saveEditedEntry = function() {
+        if (!currentYear || !currentMonth || !currentDay) return;
+        const key = `${currentYear}-${currentMonth}-${currentDay}`;
+        
+        const existingEntry = getEntry(currentYear, currentMonth, currentDay);
+        const existingTags = existingEntry ? existingEntry.tags || [] : [];
+        
+        const newEntry = {
+            original: document.getElementById('editOriginal').value,
+            zh: document.getElementById('editZh').value,
+            en: document.getElementById('editEn').value,
+            ja: document.getElementById('editJa').value,
+            tags: existingTags
+        };
+        userEditedDiary[key] = newEntry;
+        saveUserEditedDiary();
+        updateContent();
+        alert('已保存');
+        document.getElementById('editArea').classList.remove('visible');
+    };
+
+    window.cancelEdit = function() {
+        const entry = getEntry(currentYear, currentMonth, currentDay);
+        if (entry) {
+            document.getElementById('editOriginal').value = entry.original || '';
+            document.getElementById('editZh').value = entry.zh || '';
+            document.getElementById('editEn').value = entry.en || '';
+            document.getElementById('editJa').value = entry.ja || '';
+        }
+        document.getElementById('editArea').classList.remove('visible');
+    };
+
+    // ========== 术语页函数 ==========
+    function renderTermGrids() {
+        const grid2023 = document.getElementById('terms2023Grid');
+        grid2023.innerHTML = terms2023.map(t => `<span class="term-item" onclick="showTermDetail('${t}')">${t}</span>`).join('');
+
+        const grid2024 = document.getElementById('terms2024Grid');
+        grid2024.innerHTML = terms2024.map(t => `<span class="term-item" onclick="showTermDetail('${t}')">${t}</span>`).join('');
+
+        const grid2025 = document.getElementById('terms2025Grid');
+        grid2025.innerHTML = terms2025.map(t => `<span class="term-item" onclick="showTermDetail('${t}')">${t}</span>`).join('');
+    }
+
+    // 初始化
+    init();
+</script>
+</body>
+</html>
